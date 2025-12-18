@@ -1,20 +1,39 @@
-# Système 
+# --- Système OS ---
 .DS_Store
+Thumbs.db
 
-# Terraform 
+# --- Terraform ---
 .terraform/
 *.tfstate
 *.tfstate.backup
+*.tfvars        # CRITIQUE : Contient souvent tes mots de passe/tokens
+.terraform.lock.hcl # (Optionnel : on le garde souvent, mais à savoir)
 
-# Ansible 
+# --- Ansible ---
 *.retry
+*.log
 
-# Clés et Secrets 
+# --- Python ---
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# --- Clés et Secrets ---
 *.pem
 *.key
-id_rsa
+*.p12
+id_rsa*
+id_ed25519* 
+known_hosts
+authorized_keys
 secrets.yaml
 .env
 
-# IDE 
+# --- Kubernetes --- #Pour plus tard !!!!
+config           
+kubeconfig
+
+# --- IDE ---
 .vscode/
+.idea/          
