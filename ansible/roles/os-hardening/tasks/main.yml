@@ -1,0 +1,33 @@
+---
+- name: "System Hardening : Full System Update"
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    upgrade: dist
+    autoremove: yes
+
+- name: "Install base dependencies"
+  ansible.builtin.apt:
+    name:
+      - vim
+      - curl
+      - wget
+      - git
+      - htop
+      - iproute2        
+      - apt-transport-https
+      - ca-certificates
+      - gnupg2
+    state: present
+
+- name: "Disable SWAP (1/2) - Turn off swap immediately"
+  ansible.builtin.command: swapoff -a
+  changed_when: false  
+  ignore_errors: true  
+
+- name: "Disable SWAP (2/2) - Remove swap entry from /etc/fstab"
+  ansible.builtin.replace:
+    path: /etc/fstab
+    regexp: '^([^#].*swap.*)$'
+    replace: '# \1'
+    backup: yes
