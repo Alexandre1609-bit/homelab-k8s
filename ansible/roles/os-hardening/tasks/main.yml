@@ -31,3 +31,9 @@
     regexp: '^([^#].*swap.*)$'
     replace: '# \1'
     backup: yes
+
+- name: "Disable UFW (Firewall) to ensure Kubernetes traffic flow"
+  ansible.builtin.service:
+    name: ufw
+    state: stopped
+    enabled: no
