@@ -1,36 +1,7 @@
 ---
-- name: "Configuration de base des noeuds"
+- name: "Préparation des noeuds pour Kubernetes"
   hosts: all
   become: yes
-  vars:
-    k8s_version: "1.28"
 
-  tasks:
-    - name: "Désactiver le Swap"
-      ansible.builtin.command: swapoff -a
-      when: ansible_swaptotal_mb > 0
-      # Il faudra aussi le commenter dans /etc/fstab plus tard
-
-    - name: "Mettre à jour le cache APT"
-      ansible.builtin.apt:
-        update_cache: yes
-        cache_valid_time: 3600
-
-    - name: "Installer les outils de base indispensables"
-      ansible.builtin.apt:
-        name:
-          - vim
-          - curl
-          - wget
-          - git
-          - htop
-          - net-tools
-        state: present
-
-    - name: "Charger les modules Noyau pour Containerd"
-      community.general.modprobe:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - overlay
-        - br_netfilter  
+  roles:
+    - role: os-hardening

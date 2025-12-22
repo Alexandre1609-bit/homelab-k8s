@@ -22,8 +22,7 @@
 
 - name: "Disable SWAP (1/2) - Turn off swap immediately"
   ansible.builtin.command: swapoff -a
-  changed_when: false  
-  ignore_errors: true  
+  when: ansible_swaptotal_mb > 0
 
 - name: "Disable SWAP (2/2) - Remove swap entry from /etc/fstab"
   ansible.builtin.replace:
@@ -37,3 +36,11 @@
     name: ufw
     state: stopped
     enabled: no
+
+- name: "Load Kernel modules required by Containerd"
+  community.general.modprobe:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - overlay
+    - br_netfilter
