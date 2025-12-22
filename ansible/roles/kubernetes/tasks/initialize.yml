@@ -1,0 +1,38 @@
+---
+- name: "Initialize Kubernetes cluster"
+  ansible.builtin.command:
+    cmd: kubeadm init --pod-network-cidr={{ kubernetes_pod_network_cidr }}
+    creates: /etc/kubernetes/admin.conf
+  
+- name: "Ensure kubectl config directory exists"
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.kube"
+    state: directory
+    mode : '0755'
+
+- name: "Copy admin.conf to user's kube config"
+  ansible.builtin.copy:
+    src: /etc/kubernetes/admin.conf
+    dest: "{{ ansible_env.HOME }}/.kube/config"
+    remote_src: true
+    mode: '0600'
+
+- name: "Download Flannel manifest"
+  ansible.builtin.get_url:
+    url: https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+    dest: /tmp/kube-flannel.yml
+    mode: '0644'
+
+- name: "Apply Flannel CNI"
+  ansible.builtin.command:
+    cmd: kubectl apply -f /tmp/kube-flannel.yml
+
+- name: "Generate join command"
+  ansible.builtin.command:
+    cmd: kubeadm token create --print-join-command
+  register: join_command_output
+
+- name: "Store join command in a dummy host"
+  ansible.builtin.add_host:
+    name: "K8S_TOKEN_HOLDER"
+    token: "{{ join_command_output.stdout }}"

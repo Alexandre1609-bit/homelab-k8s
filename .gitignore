@@ -6,8 +6,8 @@ Thumbs.db
 .terraform/
 *.tfstate
 *.tfstate.backup
-*.tfvars        # CRITIQUE : Contient souvent tes mots de passe/tokens
-.terraform.lock.hcl # (Optionnel : on le garde souvent, mais à savoir)
+*.tfvars        
+.terraform.lock.hcl
 
 # --- Ansible ---
 *.retry
@@ -37,3 +37,4 @@ kubeconfig
 # --- IDE ---
 .vscode/
 .idea/          
+*.swp

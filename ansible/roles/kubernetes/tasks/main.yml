@@ -1,0 +1,12 @@
+---
+- name: "Install Kubernetes prerequisites"
+  ansible.builtin.include_tasks: install.yml
+
+- name: "Initialize Kubernetes master"
+  ansible.builtin.include_tasks: initialize.yml
+  when: inventory_hostname in groups['masters']
+
+- name: "Add workers"
+  ansible.builtin.include_tasks: join_workers.yml
+  when: inventory_hostname in groups['workers']
+  

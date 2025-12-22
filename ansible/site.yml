@@ -1,0 +1,9 @@
+---
+- name: "Global Deployment: Kubernetes Cluster"
+  hosts: all
+  become: yes
+
+  roles:
+    - role: os-hardening
+    - role: containerd
+    - role: kubernetes
