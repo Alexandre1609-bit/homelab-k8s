@@ -1,10 +1,10 @@
 ---
 - name: "System Hardening : Full System Update"
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 3600
     upgrade: dist
-    autoremove: yes
+    autoremove: true
 
 - name: "Install base dependencies"
   ansible.builtin.apt:
@@ -14,7 +14,7 @@
       - wget
       - git
       - htop
-      - iproute2        
+      - iproute2
       - apt-transport-https
       - ca-certificates
       - gnupg2
@@ -29,18 +29,11 @@
     path: /etc/fstab
     regexp: '^([^#].*swap.*)$'
     replace: '# \1'
-    backup: yes
+    backup: true
 
 - name: "Disable UFW (Firewall) to ensure Kubernetes traffic flow"
   ansible.builtin.service:
     name: ufw
     state: stopped
-    enabled: no
+    enabled: false
 
-- name: "Load Kernel modules required by Containerd"
-  community.general.modprobe:
-    name: "{{ item }}"
-    state: present
-  loop:
-    - overlay
-    - br_netfilter
