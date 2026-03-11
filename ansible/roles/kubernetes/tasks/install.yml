@@ -29,7 +29,7 @@
       - kubeadm
       - kubectl
     state: present
-    update_cache: yes
+    update_cache: true
 
 - name: "Prevent Kubernetes packages from being automatically updated"
   ansible.builtin.dpkg_selections:

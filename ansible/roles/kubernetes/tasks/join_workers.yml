@@ -3,4 +3,3 @@
   ansible.builtin.command:
     cmd: "{{ hostvars['K8S_TOKEN_HOLDER']['token'] }}"
     creates: /etc/kubernetes/kubelet.conf
-  

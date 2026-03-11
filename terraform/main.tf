@@ -1,12 +1,12 @@
 
 provider "kubernetes" {
-  config_path = "~/.cube/config" #Config k8s locale
+  config_path = "~/.kube/config" #Config k8s locale
 
 }
 
 provider "helm" {
   kubernetes {
-    config_path = "~/.cube/config"
+    config_path = "~/.kube/config"
   }
 }
 

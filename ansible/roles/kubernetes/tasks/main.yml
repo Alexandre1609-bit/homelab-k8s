@@ -9,4 +9,3 @@
 - name: "Add workers"
   ansible.builtin.include_tasks: join_workers.yml
   when: inventory_hostname in groups['workers']
-  
