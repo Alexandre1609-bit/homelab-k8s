@@ -27,6 +27,12 @@ Le code Ansible a été conçu il y a plusieurs mois, sans une réelle volonté 
 
 - **UFW désactivé :** Documenté comme une **dette technique** justifiée en phase de développement pour éviter les conflits avec Cilium, mais à adresser en phase de sécurité via les Network Policies Cilium et une configuration UFW stricte sur les ports Kubernetes critiques (6443, 2379-2380, 10250, 10257, 10259).
 
+**Suppression d'outils par défaut :** En accord avec les objectifs de mon homelab, j'ai décidé de restreindre les outils installés de base. J'ai donc supprimé de la liste **git**, **wget**, **curl**, **vim**, **htop** et **apt-transport-https**.
+
+- **apt-transport-https** : Le support HTTPS est désormais géré nativement par les versions récentes d'APT, ce paquet est donc devenu superflu.
+
+- **Sécurité** : Concernant les autres outils, bien qu'utiles, ils représentent des vecteurs d'attaque ou des outils d'énumération potentiels pour un attaquant ayant réussi à s'introduire dans un conteneur ou sur un nœud.
+
 ## 3. Concepts appris
 
 - **overlay** et **br_netfilter** : Leurs rôles respectifs dans la stack conteneur et pourquoi ils appartiennent à **containerd**.
