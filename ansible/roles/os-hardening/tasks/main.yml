@@ -9,13 +9,7 @@
 - name: "Install base dependencies"
   ansible.builtin.apt:
     name:
-      - vim
-      - curl
-      - wget
-      - git
-      - htop
       - iproute2
-      - apt-transport-https
       - ca-certificates
       - gnupg2
     state: present
@@ -36,4 +30,3 @@
     name: ufw
     state: stopped
     enabled: false
-
