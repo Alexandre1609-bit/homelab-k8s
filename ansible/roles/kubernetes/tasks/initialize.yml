@@ -4,16 +4,21 @@
     cmd: kubeadm init --skip-phases=addon/kube-proxy --apiserver-advertise-address={{ ansible_default_ipv4.address }} --pod-network-cidr={{ kubernetes_pod_network_cidr }}
     creates: /etc/kubernetes/admin.conf
 
+- name: "Get user environment name"
+  ansible.builtin.getent:
+    database: passwd
+    key: "{{ ansible_user }}"
+
 - name: "Ensure kubectl config directory exists"
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.kube"
+    path: "{{ ansible_facts.getent_passwd[ansible_user][4] }}/.kube"
     state: directory
     mode : '0755'
 
 - name: "Copy admin.conf to user's kube config"
   ansible.builtin.copy:
     src: /etc/kubernetes/admin.conf
-    dest: "{{ ansible_env.HOME }}/.kube/config"
+    dest: "{{ ansible_facts.getent_passwd[ansible_user][4] }}/.kube/config"
     remote_src: true
     mode: '0600'
 
